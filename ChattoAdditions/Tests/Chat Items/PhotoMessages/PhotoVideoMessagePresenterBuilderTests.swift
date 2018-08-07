@@ -22,23 +22,15 @@
  THE SOFTWARE.
 */
 
-import UIKit
+import XCTest
+@testable import ChattoAdditions
 
-public protocol PhotoMessageModelProtocol: DecoratedMessageModelProtocol {
-    var image: UIImage { get }
-    var imageSize: CGSize { get }
-}
+class PhotoVideoMessagePresenterBuilderTests: XCTestCase {
 
-open class PhotoMessageModel<MessageModelT: MessageModelProtocol>: PhotoMessageModelProtocol {
-    public var messageModel: MessageModelProtocol {
-        return self._messageModel
-    }
-    public let _messageModel: MessageModelT // Can't make messasgeModel: MessageModelT: https://gist.github.com/diegosanchezr/5a66c7af862e1117b556
-    public let image: UIImage
-    public let imageSize: CGSize
-    public init(messageModel: MessageModelT, imageSize: CGSize, image: UIImage) {
-        self._messageModel = messageModel
-        self.imageSize = imageSize
-        self.image = image
+    func testThat_CreatesPresenter() {
+        let messageModel = MessageModel(uid: "uid", senderId: "senderId", type: "photo-message", isIncoming: true, date: Date(), status: .success)
+        let photoMessageModel = PhotoMessageModel(messageModel: messageModel, imageSize: CGSize(width: 30, height: 30), image: UIImage())
+        let builder = PhotoVideoMessagePresenterBuilder(viewModelBuilder: PhotoMessageViewModelDefaultBuilder<PhotoMessageModel<MessageModel>>(), interactionHandler: PhotoMessageTestHandler())
+        XCTAssertNotNil(builder.createPresenterWithChatItem(photoMessageModel))
     }
 }

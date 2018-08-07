@@ -29,51 +29,51 @@ import Chatto
 class BaseMessagePresenterTests: XCTestCase {
 
     // BaseMessagePresenter is generic, let's use the photo one for instance
-    var presenter: PhotoMessagePresenter<PhotoMessageViewModelDefaultBuilder<PhotoMessageModel<MessageModel>>, PhotoMessageTestHandler>!
+    var presenter: PhotoVideoMessagePresenter<PhotoVideoMessageViewModelDefaultBuilder<PhotoVideoMessageModel<MessageModel>>, PhotoVideoMessageTestHandler>!
     let decorationAttributes = ChatItemDecorationAttributes(bottomMargin: 0, messageDecorationAttributes: BaseMessageDecorationAttributes())
-    var interactionHandler: PhotoMessageTestHandler!
+    var interactionHandler: PhotoVideoMessageTestHandler!
     override func setUp() {
         super.setUp()
-        let viewModelBuilder = PhotoMessageViewModelDefaultBuilder<PhotoMessageModel<MessageModel>>()
-        let sizingCell = PhotoMessageCollectionViewCell.sizingCell()
-        let photoStyle = PhotoMessageCollectionViewCellDefaultStyle()
+        let viewModelBuilder = PhotoVideoMessageViewModelDefaultBuilder<PhotoVideoMessageModel<MessageModel>>()
+        let sizingCell = PhotoVideoMessageCollectionViewCell.sizingCell()
+        let photoVideoStyle = PhotoVideoMessageCollectionViewCellDefaultStyle()
         let baseStyle = BaseMessageCollectionViewCellDefaultStyle()
         let messageModel = MessageModel(uid: "uid", senderId: "senderId", type: "photo-message", isIncoming: true, date: Date(), status: .success)
-        let photoMessageModel = PhotoMessageModel(messageModel: messageModel, imageSize: CGSize(width: 30, height: 30), image: UIImage())
-        self.interactionHandler = PhotoMessageTestHandler()
-        self.presenter = PhotoMessagePresenter(messageModel: photoMessageModel, viewModelBuilder: viewModelBuilder, interactionHandler: self.interactionHandler, sizingCell: sizingCell, baseCellStyle: baseStyle, photoCellStyle: photoStyle)
+        let photoVideoMessageModel = PhotoVideoMessageModel(messageModel: messageModel, imageSize: CGSize(width: 30, height: 30), image: UIImage())
+        self.interactionHandler = PhotoVideoMessageTestHandler()
+        self.presenter = PhotoVideoMessagePresenter(messageModel: photoVideoMessageModel, viewModelBuilder: viewModelBuilder, interactionHandler: self.interactionHandler, sizingCell: sizingCell, baseCellStyle: baseStyle, photoVideoCellStyle: photoVideoStyle)
     }
 
     func testThat_WhenCellIsTappedOnFailIcon_ThenInteractionHandlerHandlesEvent() {
-        let cell = PhotoMessageCollectionViewCell(frame: CGRect.zero)
+        let cell = PhotoVideoMessageCollectionViewCell(frame: CGRect.zero)
         self.presenter.configureCell(cell, decorationAttributes: self.decorationAttributes)
         cell.failedButtonTapped()
         XCTAssertTrue(self.interactionHandler.didHandleTapOnFailIcon)
     }
 
     func testThat_WhenCellIsTappedOnBubble_ThenInteractionHandlerHandlesEvent() {
-        let cell = PhotoMessageCollectionViewCell(frame: CGRect.zero)
+        let cell = PhotoVideoMessageCollectionViewCell(frame: CGRect.zero)
         self.presenter.configureCell(cell, decorationAttributes: self.decorationAttributes)
         cell.bubbleTapped(UITapGestureRecognizer())
         XCTAssertTrue(self.interactionHandler.didHandleTapOnBubble)
     }
 
     func testThat_WhenCellIsBeginLongPressOnBubble_ThenInteractionHandlerHandlesEvent() {
-        let cell = PhotoMessageCollectionViewCell(frame: CGRect.zero)
+        let cell = PhotoVideoMessageCollectionViewCell(frame: CGRect.zero)
         self.presenter.configureCell(cell, decorationAttributes: self.decorationAttributes)
         cell.onBubbleLongPressBegan?(cell)
         XCTAssertTrue(self.interactionHandler.didHandleBeginLongPressOnBubble)
     }
 
     func testThat_WhenCellIsEndLongPressOnBubble_ThenInteractionHandlerHandlesEvent() {
-        let cell = PhotoMessageCollectionViewCell(frame: CGRect.zero)
+        let cell = PhotoVideoMessageCollectionViewCell(frame: CGRect.zero)
         self.presenter.configureCell(cell, decorationAttributes: self.decorationAttributes)
         cell.onBubbleLongPressEnded?(cell)
         XCTAssertTrue(self.interactionHandler.didHandleEndLongPressOnBubble)
     }
 
     func testThat_WhenProvideDecorationAttributes_ThenViewModelIsUpdated() {
-        let cell = PhotoMessageCollectionViewCell(frame: CGRect.zero)
+        let cell = PhotoVideoMessageCollectionViewCell(frame: CGRect.zero)
         let messageDecorationAttributes = BaseMessageDecorationAttributes(canShowFailedIcon: false)
         let decorationAttributes = ChatItemDecorationAttributes(bottomMargin: 0, messageDecorationAttributes: messageDecorationAttributes)
         self.presenter.configureCell(cell, decorationAttributes: decorationAttributes)

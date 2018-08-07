@@ -24,18 +24,18 @@
 
 import UIKit
 
-public typealias PhotoMessageCollectionViewCellStyleProtocol = PhotoBubbleViewStyleProtocol
+public typealias PhotoVideoMessageCollectionViewCellStyleProtocol = PhotoVideoBubbleViewStyleProtocol
 
-public final class PhotoMessageCollectionViewCell: BaseMessageCollectionViewCell<PhotoBubbleView> {
+public final class PhotoVideoMessageCollectionViewCell: BaseMessageCollectionViewCell<PhotoVideoBubbleView> {
 
-    static func sizingCell() -> PhotoMessageCollectionViewCell {
-        let cell = PhotoMessageCollectionViewCell(frame: CGRect.zero)
+    static func sizingCell() -> PhotoVideoMessageCollectionViewCell {
+        let cell = PhotoVideoMessageCollectionViewCell(frame: CGRect.zero)
         cell.viewContext = .sizing
         return cell
     }
 
-    public override func createBubbleView() -> PhotoBubbleView {
-        return PhotoBubbleView()
+    public override func createBubbleView() -> PhotoVideoBubbleView {
+        return PhotoVideoBubbleView()
     }
 
     override public var viewContext: ViewContext {
@@ -44,16 +44,16 @@ public final class PhotoMessageCollectionViewCell: BaseMessageCollectionViewCell
         }
     }
 
-    public var photoMessageViewModel: PhotoMessageViewModelProtocol! {
+    public var photoVideoMessageViewModel: PhotoVideoMessageViewModelProtocol! {
         didSet {
-            self.messageViewModel = self.photoMessageViewModel
-            self.bubbleView.photoMessageViewModel = self.photoMessageViewModel
+            self.messageViewModel = self.photoVideoMessageViewModel
+            self.bubbleView.photoVideoMessageViewModel = self.photoVideoMessageViewModel
         }
     }
 
-    public var photoMessageStyle: PhotoMessageCollectionViewCellStyleProtocol! {
+    public var photoVideoMessageStyle: PhotoVideoMessageCollectionViewCellStyleProtocol! {
         didSet {
-            self.bubbleView.photoMessageStyle = self.photoMessageStyle
+            self.bubbleView.photoVideoMessageStyle = self.photoVideoMessageStyle
         }
     }
 

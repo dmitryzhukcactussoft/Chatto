@@ -24,25 +24,25 @@
 
 import Foundation
 
-open class PhotoMessagePresenter<ViewModelBuilderT, InteractionHandlerT>
-: BaseMessagePresenter<PhotoBubbleView, ViewModelBuilderT, InteractionHandlerT> where
+open class PhotoVideoMessagePresenter<ViewModelBuilderT, InteractionHandlerT>
+: BaseMessagePresenter<PhotoVideoBubbleView, ViewModelBuilderT, InteractionHandlerT> where
     ViewModelBuilderT: ViewModelBuilderProtocol,
-    ViewModelBuilderT.ViewModelT: PhotoMessageViewModelProtocol,
+    ViewModelBuilderT.ViewModelT: PhotoVideoMessageViewModelProtocol,
     InteractionHandlerT: BaseMessageInteractionHandlerProtocol,
     InteractionHandlerT.ViewModelT == ViewModelBuilderT.ViewModelT {
     public typealias ModelT = ViewModelBuilderT.ModelT
     public typealias ViewModelT = ViewModelBuilderT.ViewModelT
 
-    public let photoCellStyle: PhotoMessageCollectionViewCellStyleProtocol
+    public let photoVideoCellStyle: PhotoVideoMessageCollectionViewCellStyleProtocol
 
     public init (
         messageModel: ModelT,
         viewModelBuilder: ViewModelBuilderT,
         interactionHandler: InteractionHandlerT?,
-        sizingCell: PhotoMessageCollectionViewCell,
+        sizingCell: PhotoVideoMessageCollectionViewCell,
         baseCellStyle: BaseMessageCollectionViewCellStyleProtocol,
-        photoCellStyle: PhotoMessageCollectionViewCellStyleProtocol) {
-            self.photoCellStyle = photoCellStyle
+        photoVideoCellStyle: PhotoVideoMessageCollectionViewCellStyleProtocol) {
+            self.photoVideoCellStyle = photoVideoCellStyle
             super.init(
                 messageModel: messageModel,
                 viewModelBuilder: viewModelBuilder,
@@ -53,7 +53,7 @@ open class PhotoMessagePresenter<ViewModelBuilderT, InteractionHandlerT>
     }
 
     public final override class func registerCells(_ collectionView: UICollectionView) {
-        collectionView.register(PhotoMessageCollectionViewCell.self, forCellWithReuseIdentifier: "photo-message")
+        collectionView.register(PhotoVideoMessageCollectionViewCell.self, forCellWithReuseIdentifier: "photo-message")
     }
 
     public final override func dequeueCell(collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {
@@ -73,10 +73,10 @@ open class PhotoMessagePresenter<ViewModelBuilderT, InteractionHandlerT>
         return viewModel
     }
 
-    public var photoCell: PhotoMessageCollectionViewCell? {
+    public var photoVideoCell: PhotoVideoMessageCollectionViewCell? {
         if let cell = self.cell {
-            if let photoCell = cell as? PhotoMessageCollectionViewCell {
-                return photoCell
+            if let photoVideoCell = cell as? PhotoVideoMessageCollectionViewCell {
+                return photoVideoCell
             } else {
                 assert(false, "Invalid cell was given to presenter!")
             }
@@ -84,21 +84,21 @@ open class PhotoMessagePresenter<ViewModelBuilderT, InteractionHandlerT>
         return nil
     }
 
-    open override func configureCell(_ cell: BaseMessageCollectionViewCell<PhotoBubbleView>, decorationAttributes: ChatItemDecorationAttributes, animated: Bool, additionalConfiguration: (() -> Void)?) {
-        guard let cell = cell as? PhotoMessageCollectionViewCell else {
+    open override func configureCell(_ cell: BaseMessageCollectionViewCell<PhotoVideoBubbleView>, decorationAttributes: ChatItemDecorationAttributes, animated: Bool, additionalConfiguration: (() -> Void)?) {
+        guard let cell = cell as? PhotoVideoMessageCollectionViewCell else {
             assert(false, "Invalid cell received")
             return
         }
 
         super.configureCell(cell, decorationAttributes: decorationAttributes, animated: animated) { () -> Void in
-            cell.photoMessageViewModel = self.messageViewModel
-            cell.photoMessageStyle = self.photoCellStyle
+            cell.photoVideoMessageViewModel = self.messageViewModel
+            cell.photoVideoMessageStyle = self.photoVideoCellStyle
             additionalConfiguration?()
         }
     }
 
     public func updateCurrentCell() {
-        if let cell = self.photoCell, let decorationAttributes = self.decorationAttributes {
+        if let cell = self.photoVideoCell, let decorationAttributes = self.decorationAttributes {
             self.configureCell(cell, decorationAttributes: decorationAttributes, animated: self.itemVisibility != .appearing, additionalConfiguration: nil)
         }
     }

@@ -24,8 +24,8 @@
 
 import UIKit
 
-open class PhotoMessageCollectionViewCellDefaultStyle: PhotoMessageCollectionViewCellStyleProtocol {
-    typealias Class = PhotoMessageCollectionViewCellDefaultStyle
+open class PhotoVideoMessageCollectionViewCellDefaultStyle: PhotoVideoMessageCollectionViewCellStyleProtocol {
+    typealias Class = PhotoVideoMessageCollectionViewCellDefaultStyle
 
     public struct BubbleMasks {
         public let incomingTail: () -> UIImage
@@ -116,7 +116,7 @@ open class PhotoMessageCollectionViewCellDefaultStyle: PhotoMessageCollectionVie
         return UIImage(named: "photo-bubble-placeholder-icon", in: Bundle(for: Class.self), compatibleWith: nil)!
     }()
 
-    open func maskingImage(viewModel: PhotoMessageViewModelProtocol) -> UIImage {
+    open func maskingImage(viewModel: PhotoVideoMessageViewModelProtocol) -> UIImage {
         switch (viewModel.isIncoming, viewModel.decorationAttributes.isShowingTail) {
         case (true, true):
             return self.maskImageIncomingTail
@@ -129,27 +129,27 @@ open class PhotoMessageCollectionViewCellDefaultStyle: PhotoMessageCollectionVie
         }
     }
 
-    open func borderImage(viewModel: PhotoMessageViewModelProtocol) -> UIImage? {
+    open func borderImage(viewModel: PhotoVideoMessageViewModelProtocol) -> UIImage? {
         return self.baseStyle.borderImage(viewModel: viewModel)
     }
 
-    open func placeholderBackgroundImage(viewModel: PhotoMessageViewModelProtocol) -> UIImage {
+    open func placeholderBackgroundImage(viewModel: PhotoVideoMessageViewModelProtocol) -> UIImage {
         return viewModel.isIncoming ? self.placeholderBackgroundIncoming : self.placeholderBackgroundOutgoing
     }
 
-    open func placeholderIconImage(viewModel: PhotoMessageViewModelProtocol) -> UIImage {
+    open func placeholderIconImage(viewModel: PhotoVideoMessageViewModelProtocol) -> UIImage {
         return self.placeholderIcon
     }
 
-    open func placeholderIconTintColor(viewModel: PhotoMessageViewModelProtocol) -> UIColor {
+    open func placeholderIconTintColor(viewModel: PhotoVideoMessageViewModelProtocol) -> UIColor {
         return viewModel.isIncoming ? self.colors.placeholderIconTintIncoming : self.colors.placeholderIconTintOutgoing
     }
 
-    open func tailWidth(viewModel: PhotoMessageViewModelProtocol) -> CGFloat {
+    open func tailWidth(viewModel: PhotoVideoMessageViewModelProtocol) -> CGFloat {
         return self.bubbleMasks.tailWidth
     }
 
-    open func bubbleSize(viewModel: PhotoMessageViewModelProtocol) -> CGSize {
+    open func bubbleSize(viewModel: PhotoVideoMessageViewModelProtocol) -> CGSize {
         let aspectRatio = viewModel.imageSize.height > 0 ? viewModel.imageSize.width / viewModel.imageSize.height : 0
 
         if aspectRatio == 0 || self.sizes.aspectRatioIntervalForSquaredSize.contains(aspectRatio) {
@@ -161,18 +161,18 @@ open class PhotoMessageCollectionViewCellDefaultStyle: PhotoMessageCollectionVie
         }
     }
 
-    open func progressIndicatorColor(viewModel: PhotoMessageViewModelProtocol) -> UIColor {
+    open func progressIndicatorColor(viewModel: PhotoVideoMessageViewModelProtocol) -> UIColor {
         return viewModel.isIncoming ? self.colors.progressIndicatorColorIncoming : self.colors.progressIndicatorColorOutgoing
     }
 
-    open func overlayColor(viewModel: PhotoMessageViewModelProtocol) -> UIColor? {
+    open func overlayColor(viewModel: PhotoVideoMessageViewModelProtocol) -> UIColor? {
         let showsOverlay = viewModel.image.value != nil && (viewModel.transferStatus.value == .transfering || viewModel.status != MessageViewModelStatus.success)
         return showsOverlay ? self.colors.overlayColor : nil
     }
 
 }
 
-public extension PhotoMessageCollectionViewCellDefaultStyle { // Default values
+public extension PhotoVideoMessageCollectionViewCellDefaultStyle { // Default values
 
     static public func createDefaultBubbleMasks() -> BubbleMasks {
         return BubbleMasks(

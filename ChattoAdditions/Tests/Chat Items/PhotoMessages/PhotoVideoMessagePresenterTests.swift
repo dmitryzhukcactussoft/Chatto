@@ -25,20 +25,20 @@
 import XCTest
 @testable import ChattoAdditions
 
-class PhotoMessagePresenterTests: XCTestCase, UICollectionViewDataSource {
+class PhotoVideoMessagePresenterTests: XCTestCase, UICollectionViewDataSource {
 
-    var presenter: PhotoMessagePresenter<PhotoMessageViewModelDefaultBuilder<PhotoMessageModel<MessageModel>>, PhotoMessageTestHandler>!
+    var presenter: PhotoVideoMessagePresenter<PhotoVideoMessageViewModelDefaultBuilder<PhotoVideoMessageModel<MessageModel>>, PhotoVideoMessageTestHandler>!
     let decorationAttributes = ChatItemDecorationAttributes(bottomMargin: 0, canShowTail: false, canShowAvatar: false, canShowFailedIcon: true)
     let testImage = UIImage()
     override func setUp() {
         super.setUp()
-        let viewModelBuilder = PhotoMessageViewModelDefaultBuilder<PhotoMessageModel<MessageModel>>()
-        let sizingCell = PhotoMessageCollectionViewCell.sizingCell()
-        let photoStyle = PhotoMessageCollectionViewCellDefaultStyle()
+        let viewModelBuilder = PhotoVideoMessageViewModelDefaultBuilder<PhotoVideoMessageModel<MessageModel>>()
+        let sizingCell = PhotoVIDEOMessageCollectionViewCell.sizingCell()
+        let photoVideoStyle = PhotoVideoMessageCollectionViewCellDefaultStyle()
         let baseStyle = BaseMessageCollectionViewCellDefaultStyle()
         let messageModel = MessageModel(uid: "uid", senderId: "senderId", type: "photo-message", isIncoming: true, date: NSDate() as Date, status: .success)
-        let photoMessageModel = PhotoMessageModel(messageModel: messageModel, imageSize: CGSize(width: 30, height: 30), image: self.testImage)
-        self.presenter = PhotoMessagePresenter(messageModel: photoMessageModel, viewModelBuilder: viewModelBuilder, interactionHandler: PhotoMessageTestHandler(), sizingCell: sizingCell, baseCellStyle: baseStyle, photoCellStyle: photoStyle)
+        let photoVideoMessageModel = PhotoVideoMessageModel(messageModel: messageModel, imageSize: CGSize(width: 30, height: 30), image: self.testImage)
+        self.presenter = PhotoVideoMessagePresenter(messageModel: photoVideoMessageModel, viewModelBuilder: viewModelBuilder, interactionHandler: PhotoVideoMessageTestHandler(), sizingCell: sizingCell, baseCellStyle: baseStyle, photoVideoCellStyle: photoVideoStyle)
     }
 
     func testThat_heightForCelReturnsPositiveHeight() {
@@ -58,7 +58,7 @@ class PhotoMessagePresenterTests: XCTestCase, UICollectionViewDataSource {
 
     func testThat_RegistersAndDequeuesCells() {
         let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
-        PhotoMessagePresenter<PhotoMessageViewModelDefaultBuilder<PhotoMessageModel<MessageModel>>, PhotoMessageTestHandler>.registerCells(collectionView)
+        PhotoVideoMessagePresenter<PhotoVideoMessageViewModelDefaultBuilder<PhotoVideoMessageModel<MessageModel>>, PhotoVideoMessageTestHandler>.registerCells(collectionView)
         collectionView.dataSource = self
         collectionView.reloadData()
         XCTAssertNotNil(self.presenter.dequeueCell(collectionView: collectionView, indexPath: IndexPath(item: 0, section: 0)))
@@ -76,7 +76,7 @@ class PhotoMessagePresenterTests: XCTestCase, UICollectionViewDataSource {
     }
 }
 
-class PhotoMessageTestHandler: BaseMessageInteractionHandlerProtocol {
+class PhotoVideoMessageTestHandler: BaseMessageInteractionHandlerProtocol {
     typealias ViewModelT = PhotoMessageViewModel<PhotoMessageModel<MessageModel>>
 
     var didHandleTapOnFailIcon = false

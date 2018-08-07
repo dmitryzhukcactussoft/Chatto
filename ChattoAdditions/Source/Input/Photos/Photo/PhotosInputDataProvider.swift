@@ -72,7 +72,7 @@ final class PhotosInputDataProvider: NSObject, PhotosInputDataProviderProtocol, 
         }
 
         if let userLibraryCollection = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil).firstObject {
-            self.fetchResult = PHAsset.fetchAssets(in: userLibraryCollection, options: fetchOptions(NSPredicate(format: "mediaType = \(PHAssetMediaType.image.rawValue)")))
+            self.fetchResult = PHAsset.fetchAssets(in: userLibraryCollection, options: fetchOptions(NSPredicate(format: "mediaType IN %@",["\(PHAssetMediaType.image.rawValue)","\(PHAssetMediaType.video.rawValue)"])))
         } else {
             self.fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions(nil))
         }

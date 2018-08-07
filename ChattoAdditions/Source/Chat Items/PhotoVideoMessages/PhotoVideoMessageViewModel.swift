@@ -36,35 +36,38 @@ public enum TransferStatus {
     case success
 }
 
-public protocol PhotoMessageViewModelProtocol: DecoratedMessageViewModelProtocol {
+public protocol PhotoVideoMessageViewModelProtocol: DecoratedMessageViewModelProtocol {
     var transferDirection: Observable<TransferDirection> { get set }
     var transferProgress: Observable<Double> { get  set } // in [0,1]
     var transferStatus: Observable<TransferStatus> { get set }
     var image: Observable<UIImage?> { get set }
     var imageSize: CGSize { get }
+    var url: Observable<URL?> { get }
 }
 
-open class PhotoMessageViewModel<PhotoMessageModelT: PhotoMessageModelProtocol>: PhotoMessageViewModelProtocol {
-    public var photoMessage: PhotoMessageModelProtocol {
-        return self._photoMessage
+open class PhotoVideoMessageViewModel<PhotoVideoMessageModelT: PhotoVideoMessageModelProtocol>: PhotoVideoMessageViewModelProtocol {
+    public var photoVideoMessage: PhotoVideoMessageModelProtocol {
+        return self._photoVideoMessage
     }
-    public let _photoMessage: PhotoMessageModelT // Can't make photoMessage: PhotoMessageModelT: https://gist.github.com/diegosanchezr/5a66c7af862e1117b556
+    public let _photoVideoMessage: PhotoVideoMessageModelT // Can't make photoMessage: PhotoVideoMessageModelT: https://gist.github.com/diegosanchezr/5a66c7af862e1117b556
     public var transferStatus: Observable<TransferStatus> = Observable(.idle)
     public var transferProgress: Observable<Double> = Observable(0)
     public var transferDirection: Observable<TransferDirection> = Observable(.download)
     public var image: Observable<UIImage?>
+    public var url: Observable<URL?>
     open var imageSize: CGSize {
-        return self.photoMessage.imageSize
+        return self.photoVideoMessage.imageSize
     }
     public let messageViewModel: MessageViewModelProtocol
     open var isShowingFailedIcon: Bool {
         return self.messageViewModel.isShowingFailedIcon || self.transferStatus.value == .failed
     }
 
-    public init(photoMessage: PhotoMessageModelT, messageViewModel: MessageViewModelProtocol) {
-        self._photoMessage = photoMessage
-        self.image = Observable(photoMessage.image)
-        self.messageViewModel = messageViewModel
+    public init(photoVideoMessage: PhotoVideoMessageModelT, messageViewModel: MessageViewModelProtocol) {
+        self._photoVideoMessage = photoVideoMessage
+        self.image = Observable(photoVideoMessage.image)
+        self.url = Observable(photoVideoMessage.url)
+        self.messageViewModel = messageViewModel 
     }
 
     open func willBeShown() {
@@ -76,18 +79,18 @@ open class PhotoMessageViewModel<PhotoMessageModelT: PhotoMessageModelProtocol>:
     }
 }
 
-open class PhotoMessageViewModelDefaultBuilder<PhotoMessageModelT: PhotoMessageModelProtocol>: ViewModelBuilderProtocol {
+open class PhotoVideoMessageViewModelDefaultBuilder<PhotoVideoMessageModelT: PhotoVideoMessageModelProtocol>: ViewModelBuilderProtocol {
     public init() {}
 
     let messageViewModelBuilder = MessageViewModelDefaultBuilder()
 
-    open func createViewModel(_ model: PhotoMessageModelT) -> PhotoMessageViewModel<PhotoMessageModelT> {
+    open func createViewModel(_ model: PhotoVideoMessageModelT) -> PhotoVideoMessageViewModel<PhotoVideoMessageModelT> {
         let messageViewModel = self.messageViewModelBuilder.createMessageViewModel(model)
-        let photoMessageViewModel = PhotoMessageViewModel(photoMessage: model, messageViewModel: messageViewModel)
-        return photoMessageViewModel
+        let photoVideoMessageViewModel = PhotoVideoMessageViewModel(photoVideoMessage: model, messageViewModel: messageViewModel)
+        return photoVideoMessageViewModel
     }
 
     open func canCreateViewModel(fromModel model: Any) -> Bool {
-        return model is PhotoMessageModelT
+        return model is PhotoVideoMessageModelT
     }
 }
